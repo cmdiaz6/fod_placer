@@ -30,7 +30,7 @@ class Point:
         y = self.y * other
         z = self.z * other
         return Point(x,y,z)
-    def __rmul__(self,other):
+    #def __rmul__(self,other):
         
     
     def dot(self,other):
