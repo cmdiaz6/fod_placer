@@ -1,0 +1,5 @@
+
+ tetrahedron 0.0 0.0 0.0 size 0.6  pointto 5 0 0
+ tetrahedron 10 0 0 size 0.6  pointto 20 0 0
+ tetrahedron 10 0 0 size 1.5  pointto 0 0 0
+ point 5.0 0 0
