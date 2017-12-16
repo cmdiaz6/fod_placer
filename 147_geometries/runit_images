@@ -1,0 +1,15 @@
+#!/bin/bash
+
+for file in $(<slist)
+do 
+  image_name=${file}
+  echo "$image_name"
+  rm -f a.xyz
+  cp ${file} a.xyz
+  jmol -ns h.spt
+ 
+  image_name="${image_name/xyz/jpeg}"
+  echo "$image_name"
+  cp b.jpg ./images/${image_name}
+  rm a.xyz b.jpg
+done

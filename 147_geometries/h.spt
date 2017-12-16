@@ -1,0 +1,23 @@
+#load "WFHOMO00a.cube"
+load "a.xyz"
+background white
+#color carbon green
+#connect 1.4 1.5 (all) (all)
+#isosurface HOMO cutoff 0.00005 "a.cube"
+#color isosurface blue
+zoom 80
+
+#wireframe 10 
+#measure RANGE 1.2 1.4 (boron) (nitrogen)
+#write image JPG "b.jpg"
+#write image 1000 512 JPG "b.jpg"
+write image 1000 750 JPG "b.jpg"
+
+
+~                                                                                                                                              
+~                                                                                                                                              
+~                                                                                                                                              
+~                                                                                                                                              
+~                                                                                                                                              
+~                                                                                                                                              
+~                                                                 
