@@ -15,6 +15,24 @@ def place_fod(self):
     pointlist = [self]
     printfods(pointlist)
 
+def double_bond(self,other,planeatom,dist):
+    """places two FODs above and below plane between two atoms"""
+
+    midpoint = (self + other) * 0.5
+ 
+    v1 = self - other
+    v2 = self - planeatom 
+    #define vector normal to plane
+    n = v1.cross(v2)
+    n = normalize(n) 
+
+    #place FOD above and below plane
+    p1 = midpoint + n*dist
+    p2 = midpoint - n*dist
+    pointlist = [p1,p2]
+
+    printfods(pointlist)
+
 def place_tetrahedron(self,tsize,bondatom, alignatom = None):
     """Places tetrahedron at given point
     top of tetrahedron points toward bond atom"""
@@ -35,9 +53,7 @@ def place_tetrahedron(self,tsize,bondatom, alignatom = None):
     #translate vector to origin
     vbond = vbond - atom_center
     
-    #print('rotating tetrahedron:',p1,p2,p3,p4)
-    print('rotating tetrahedron')
-    print('point to bond vector:',vbond)
+    print('rotating tetrahedron to point to bond vector:',vbond)
     
     #define axis of rotation as point perpendicular to top and vbond
     n = vtop.cross(vbond)
@@ -49,7 +65,7 @@ def place_tetrahedron(self,tsize,bondatom, alignatom = None):
             print('already aligned')
             theta = 0.0
     else:
-        n = n*(1/norm(n)) #normalize
+        n = normalize(n) #normalize
         #print('normalized n',n)
         
         #define angle of rotation as angle between top and vbond
@@ -57,7 +73,7 @@ def place_tetrahedron(self,tsize,bondatom, alignatom = None):
         theta = vtop.dot(vbond) / (norm(vtop)*norm(vbond))
         theta = math.acos(theta)
 
-    print('by theta:',theta)
+    print('by theta: {0:4.4f}'.format(theta))
     print()
     
 #Rotate tetrahedron to point along bond
@@ -76,7 +92,7 @@ def place_tetrahedron(self,tsize,bondatom, alignatom = None):
         # ||(b2 x b1|| * || p2 x b1||
         a1 = b2.cross(vbond)
         a2 = p2.cross(vbond)
-        theta = a1.dot(a2) *(1/norm(a1))*(1/norm(a2))
+        theta = a1.dot(a2) / (norm(a1)*norm(a2))
         theta = math.acos(theta)
 
         newlist = pointlist
@@ -89,20 +105,14 @@ def place_tetrahedron(self,tsize,bondatom, alignatom = None):
         #translate to atom center
         pointlist[i] = point + atom_center
 
-    print('printing to file')
+    #print('printing to file')
     printfods(pointlist)
         
 def printfods(self):
-    if os.path.exists('new.xyz'):
-        f1=open('new.xyz','a')
-        f1.write('\n')
-    else:
-        f1=open('new.xyz','a')
-        line = ' ' + str(1) + '\n  #replace with # of FODS \n'
-        f1.write(line)
-
+    """"prints fods to xyz"""
+    f1 = open('tmp.xyz','a')
     for point in self:
-        line=' He ' + str(point.x) + ' ' + str(point.y) + ' ' + str(point.z) + '\n'
+        line=' H {0:10.6f} {1:10.6f} {2:10.6f} \n'.format(point.x,point.y,point.z)
         f1.write(line)
 
     f1.close()
