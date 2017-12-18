@@ -15,7 +15,7 @@ def place_fod(self):
     pointlist = [self]
     printfods(pointlist)
 
-def double_bond(self,other,planeatom,dist):
+def place_doublebond(self,other,dist,planeatom):
     """places two FODs above and below plane between two atoms"""
 
     midpoint = (self + other) * 0.5
@@ -74,7 +74,6 @@ def place_tetrahedron(self,tsize,bondatom, alignatom = None):
         theta = math.acos(theta)
 
     print('by theta: {0:4.4f}'.format(theta))
-    print()
     
 #Rotate tetrahedron to point along bond
     newlist = pointlist 
@@ -84,21 +83,25 @@ def place_tetrahedron(self,tsize,bondatom, alignatom = None):
 
 #OPTIONAL: ALIGN TETRAHEDRON
     if alignatom is not None:
+        print('aligning atom to ',alignatom)
         b2=alignatom
         #new n: rotate along bond angle, keeps top p1 fixed
-        n = p1 
+        n = pointlist[0]
+        print('rotate around: ',n)
         #new theta = angle between normal vectors of planes (b1,center,b2) and (b1,center,p2) 
         #     (b2 x b1).(p2 x b1) /
         # ||(b2 x b1|| * || p2 x b1||
         a1 = b2.cross(vbond)
-        a2 = p2.cross(vbond)
+        a2 = pointlist[2].cross(vbond)
         theta = a1.dot(a2) / (norm(a1)*norm(a2))
         theta = math.acos(theta)
 
         newlist = pointlist
+        print('by theta: {0:4.4f}'.format(theta))
         for i, point in enumerate(newlist):
            pointlist[i] = point.rotatearound(n,theta) 
 
+    print()
 #translate back
     newlist = pointlist
     for i, point in enumerate(newlist): 

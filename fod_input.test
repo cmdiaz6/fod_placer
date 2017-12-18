@@ -1,0 +1,37 @@
+
+ tetrahedron 
+    center 0.0 0.0 0.0 
+    size 0.6  
+    pointto 5 0 0 
+    noalign
+end
+ tetrahedron 10 0 0 
+    size 0.6  
+    pointto 20 0 0 
+    noalign
+end
+ tetrahedron 
+    center 10 0 0 
+    size 1.5  
+    pointto 0 0 0 
+    noalign
+end
+ point 5.0 0 0
+ tetrahedron 0.0 0.0 0.0 
+    size 0.6  
+    pointto 5 0 0 
+    alignto -0.346410  0.692820  0.692820 
+ end
+ point  0 0 0
+ point -0.69282 1.38564 1.38564
+ doublebond 
+    atom1 0 0 0 
+    atom2 5 0 0 
+    distance 0.5 
+    planeatom 0 5 0
+ end
+ neon
+    center 0 0 0
+    nopoint
+    noalign
+ end

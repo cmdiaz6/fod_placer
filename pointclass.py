@@ -30,9 +30,11 @@ class Point:
         y = self.y * other
         z = self.z * other
         return Point(x,y,z)
-    #def __rmul__(self,other):
+    def __rmul__(self,other):
+        return self.__mul__(other)
         
-    def __div__(self,other):
+#    def __div__(self,other):
+    def __truediv__(self,other):
         """divide Point() by float"""
         x = self.x / other
         y = self.y / other
@@ -61,7 +63,7 @@ class Point:
 
 def normalize(self):
     """normalize vector"""
-    normalized_self = self * (1/norm(self))
+    normalized_self = self / norm(self)
     return normalized_self
 
 def norm(self):

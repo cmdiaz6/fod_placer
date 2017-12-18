@@ -1,5 +1,9 @@
 
- tetrahedron 0.0 0.0 0.0 size 0.6  pointto 5 0 0
- tetrahedron 10 0 0 size 0.6  pointto 20 0 0
- tetrahedron 10 0 0 size 1.5  pointto 0 0 0
+ tetrahedron 0.0 0.0 0.0 size 0.6  pointto 5 0 0 noalign
+ tetrahedron 10 0 0 size 0.6  pointto 20 0 0 noalign
+ tetrahedron 10 0 0 size 1.5  pointto 0 0 0 noalign
  point 5.0 0 0
+ tetrahedron 0.0 0.0 0.0 size 0.6  pointto 5 0 0 alignto -0.346410  0.692820  0.692820 
+ point 0 0 0
+ point -.69282 1.38564 1.38564
+ db 0 0 0 5 0 0 0.5 0 5 0
