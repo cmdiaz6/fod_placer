@@ -15,13 +15,16 @@ def place_fod(self):
     pointlist = [self]
     printfods(pointlist)
 
-def place_doublebond(self,other,dist,planeatom):
+def place_doublebond(self,other,dist, planeatom = None):
     """places two FODs above and below plane between two atoms"""
 
     midpoint = (self + other) * 0.5
- 
+
     v1 = self - other
-    v2 = self - planeatom 
+    if planeatom == None: 
+        v2 = v1 + Point(0.0,0.0,1.0)
+    else:
+        v2 = self - planeatom 
     #define vector normal to plane
     n = v1.cross(v2)
     n = normalize(n) 
@@ -33,12 +36,15 @@ def place_doublebond(self,other,dist,planeatom):
 
     printfods(pointlist)
 
-def place_tetrahedron(self,tsize,bondatom, alignatom = None):
+def place_tetrahedron(self,tsize,bondatom = None, alignatom = None):
     """Places tetrahedron at given point
     top of tetrahedron points toward bond atom"""
     
     atom_center=self #atom center
-    vbond=bondatom   #bond direction
+    if bondatom == None:
+        vbond = atom_center + Point(0.0,0.0,1.0)
+    else:
+        vbond=bondatom   #bond direction
     
     #type: tetrahedron
     numpoints = 4
