@@ -38,6 +38,11 @@
     atom2 5 0 0 
     distance 0.5 
  end
+ triplebond
+    atom1 0 0 0
+    atom2 5 0 0
+    distance 1.3
+ end
  neon
     center 0 0 0
     nopoint
@@ -48,3 +53,4 @@
     center 0 10 0 
     size 0.1  
  end
+

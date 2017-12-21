@@ -77,6 +77,26 @@ while True:
             if args[0].lower() == 'planeatom':
                 planeatom=Point(float(args[1]),float(args[2]),float(args[3]))
 
+    elif args[0].lower() == 'tb' or args[0].lower() == 'triplebond':
+        count+=3
+        while True:
+            line=f1.readline()
+            args = line.split()
+            narg = len(args)
+            if narg == 0:
+                continue
+            if args[0].lower() == 'end':
+                print('placing triplebond')
+                place_triplebond(atom1,atom2,dist)
+                break
+
+            if args[0].lower() == 'atom1':
+                atom1=Point(float(args[1]),float(args[2]),float(args[3]))
+            if args[0].lower() == 'atom2':
+                atom2=Point(float(args[1]),float(args[2]),float(args[3]))
+            if args[0].lower() == 'distance':
+                dist = float(args[1])
+
 print('DONE READING')
 
 #write to xyz with number of FODS on first line

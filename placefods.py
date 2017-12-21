@@ -10,21 +10,21 @@ __credits__ = ["Carlos Diaz"]
 __maintainer__ = "Carlos Diaz"
 
     
-def place_fod(self):
+def place_fod(point):
     """"Places FOD at given point"""
-    pointlist = [self]
+    pointlist = [point]
     printfods(pointlist)
 
-def place_doublebond(self,other,dist, planeatom = None):
+def place_doublebond(atom1,atom2, dist=1.0, planeatom = None):
     """places two FODs above and below plane between two atoms"""
 
-    midpoint = (self + other) * 0.5
+    midpoint = (atom1 + atom2) * 0.5
 
-    v1 = self - other
+    v1 = atom1 - atom2
     if planeatom == None: 
         v2 = v1 + Point(0.0,0.0,1.0)
     else:
-        v2 = self - planeatom 
+        v2 = atom1 - planeatom 
     #define vector normal to plane
     n = v1.cross(v2)
     n = normalize(n) 
@@ -36,18 +36,43 @@ def place_doublebond(self,other,dist, planeatom = None):
 
     printfods(pointlist)
 
-def place_tetrahedron(self,tsize,bondatom = None, alignatom = None):
+def place_triplebond(atom1,atom2, dist=1.3):
+    """places three FODs around midpoint between two atoms"""
+
+    midpoint = (atom1 + atom2) * 0.5
+
+    p1 = Point( 0.0,1.0,0.0) * dist
+    p2 = Point(-math.sqrt(3)/2, -0.5, 0.0) * dist
+    p3 = Point( math.sqrt(3)/2, -0.5, 0.0) * dist
+    pointlist = [p1,p2,p3]
+
+    #align norm of triangle with bond direction 
+    vtop = p1.cross(p2)
+    print('tp: vtop should point along Z-direction ',vtop)
+    vbond = atom1 - atom2
+    #define axis of rotation as point perpendicular to top and vbond
+    n = vtop.cross(vbond)
+    
+    #rotate points around n, align vtop with vbond
+    pointlist = rotatepoints(pointlist,n,vtop,vbond)
+    
+    #translate to midpoint
+    pointlist = translatepoints(pointlist,midpoint)
+
+    printfods(pointlist)
+
+
+def place_tetrahedron(centeratom,tsize,bondatom = None, alignatom = None):
     """Places tetrahedron at given point
     top of tetrahedron points toward bond atom"""
     
-    atom_center=self #atom center
+    atom_center=centeratom #atom center
     if bondatom == None:
         vbond = atom_center + Point(0.0,0.0,1.0)
     else:
         vbond=bondatom   #bond direction
     
     #type: tetrahedron
-    numpoints = 4
     p1 = Point( 1.0, 1.0, 1.0) * tsize
     p2 = Point(-1.0,-1.0, 1.0) * tsize
     p3 = Point(-1.0, 1.0,-1.0) * tsize
@@ -64,28 +89,8 @@ def place_tetrahedron(self,tsize,bondatom = None, alignatom = None):
     #define axis of rotation as point perpendicular to top and vbond
     n = vtop.cross(vbond)
 
-    if norm(n) == 0.0:
-        if vbond.x < 0.0:
-            theta = math.pi #180 degrees
-        else:
-            print('already aligned')
-            theta = 0.0
-    else:
-        n = normalize(n) #normalize
-        #print('normalized n',n)
-        
-        #define angle of rotation as angle between top and vbond
-        #theta = acos( a.b / ||a||*||b|| )
-        theta = vtop.dot(vbond) / (norm(vtop)*norm(vbond))
-        theta = math.acos(theta)
-
-    print('by theta: {0:4.4f}'.format(theta))
-    
-#Rotate tetrahedron to point along bond
-    newlist = pointlist 
-    for i, point in enumerate(newlist):
-        #rotate around n by theta
-        pointlist[i] = point.rotatearound(n,theta)
+    #rotate points around n, align vtop with vbond
+    pointlist = rotatepoints(pointlist,n,vtop,vbond)
 
 #OPTIONAL: ALIGN TETRAHEDRON
     if alignatom is not None:
@@ -99,28 +104,20 @@ def place_tetrahedron(self,tsize,bondatom = None, alignatom = None):
         # ||(b2 x b1|| * || p2 x b1||
         a1 = b2.cross(vbond)
         a2 = pointlist[2].cross(vbond)
-        theta = a1.dot(a2) / (norm(a1)*norm(a2))
-        theta = math.acos(theta)
 
-        newlist = pointlist
-        print('by theta: {0:4.4f}'.format(theta))
-        for i, point in enumerate(newlist):
-           pointlist[i] = point.rotatearound(n,theta) 
+        #rotate points around n, align a1 with a2
+        pointlist = rotatepoints(pointlist,n,a1,a2)
 
     print()
 #translate back
-    newlist = pointlist
-    for i, point in enumerate(newlist): 
-        #translate to atom center
-        pointlist[i] = point + atom_center
+    pointlist = translatepoints(pointlist,atom_center)
 
-    #print('printing to file')
     printfods(pointlist)
         
-def printfods(self):
+def printfods(pointlist):
     """"prints fods to xyz"""
     f1 = open('tmp.xyz','a')
-    for point in self:
+    for point in pointlist:
         line=' H {0:10.6f} {1:10.6f} {2:10.6f} \n'.format(point.x,point.y,point.z)
         f1.write(line)
 

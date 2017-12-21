@@ -70,3 +70,38 @@ def norm(self):
     norm=math.sqrt(self.x*self.x + self.y*self.y + self.z*self.z)
     return norm
 
+def rotatepoints(pointlist,n,vrotate,valign):
+    """rotates points around n
+       aligns vrotate vector with valign vector"""
+
+    if norm(n) == 0.0:
+        if valign.x < 0.0:
+            theta = math.pi #180 degrees
+        else:
+            theta = 0.0
+    else:
+        n = normalize(n) #normalize
+        
+        #define angle of rotation as angle between top and valign
+        #theta = acos( a.b / ||a||*||b|| )
+        theta = vrotate.dot(valign) / (norm(vrotate)*norm(valign))
+        theta = math.acos(theta)
+
+    print('by theta: {0:4.4f}'.format(theta))
+    
+#Rotate tetrahedron to point along bond
+    newlist = pointlist 
+    for i, point in enumerate(newlist):
+        #rotate around n by theta
+        pointlist[i] = point.rotatearound(n,theta)
+    return pointlist
+
+def translatepoints(pointlist,center):
+    """translates points by center vector"""
+
+    newlist = pointlist
+    for i, point in enumerate(newlist): 
+        #translate to atom center
+        pointlist[i] = point + center
+    return pointlist
+

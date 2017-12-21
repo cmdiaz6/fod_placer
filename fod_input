@@ -6,4 +6,5 @@
  tetrahedron 0.0 0.0 0.0 size 0.6  pointto 5 0 0 alignto -0.346410  0.692820  0.692820 
  point 0 0 0
  point -.69282 1.38564 1.38564
+#   atom1 atom2 dist atom3
  db 0 0 0 5 0 0 0.5 0 5 0
