@@ -71,9 +71,12 @@ def place_tetrahedron(centeratom,tsize,bondatom = None, alignatom = None):
         vbond = atom_center + Point(0.0,0.0,1.0)
     else:
         vbond=bondatom   #bond direction
-    
+
+    p1 = Point( 1.0, 1.0, 1.0) 
+    tsize = tsize / norm(p1)
+
     #type: tetrahedron
-    p1 = Point( 1.0, 1.0, 1.0) * tsize
+    p1 = Point( 1.0, 1.0, 1.0) * tsize 
     p2 = Point(-1.0,-1.0, 1.0) * tsize
     p3 = Point(-1.0, 1.0,-1.0) * tsize
     p4 = Point( 1.0,-1.0,-1.0) * tsize
