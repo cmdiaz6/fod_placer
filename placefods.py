@@ -10,10 +10,10 @@ __credits__ = ["Carlos Diaz"]
 __maintainer__ = "Carlos Diaz"
 
     
-def place_fod(point):
+def place_fod(point, spn = 'up'):
     """"Places FOD at given point"""
     pointlist = [point]
-    printfods(pointlist)
+    printfods(pointlist, spn)
 
 def place_doublebond(atom1,atom2, dist=1.0, planeatom = None):
     """places two FODs above and below plane between two atoms"""
@@ -62,7 +62,7 @@ def place_triplebond(atom1,atom2, dist=1.3):
     printfods(pointlist)
 
 
-def place_tetrahedron(centeratom,tsize,bondatom = None, alignatom = None):
+def place_tetrahedron(centeratom,tsize,bondatom = None, alignatom = None, spn='up'):
     """Places tetrahedron at given point
     top of tetrahedron points toward bond atom"""
     
@@ -115,13 +115,16 @@ def place_tetrahedron(centeratom,tsize,bondatom = None, alignatom = None):
 #translate back
     pointlist = translatepoints(pointlist,atom_center)
 
-    printfods(pointlist)
+    printfods(pointlist,spn)
         
-def printfods(pointlist):
+def printfods(pointlist,spn = 'up'):
     """"prints fods to xyz"""
     f1 = open('tmp.xyz','a')
     for point in pointlist:
-        line=' H {0:10.6f} {1:10.6f} {2:10.6f} \n'.format(point.x,point.y,point.z)
+        if spn == 'dn':
+            line=' X {0:10.6f} {1:10.6f} {2:10.6f} \n'.format(point.x,point.y,point.z)
+        else:
+            line=' H {0:10.6f} {1:10.6f} {2:10.6f} \n'.format(point.x,point.y,point.z)
         f1.write(line)
 
     f1.close()
