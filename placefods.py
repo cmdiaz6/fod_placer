@@ -15,7 +15,7 @@ def place_fod(point, spn = 'up'):
     pointlist = [point]
     printfods(pointlist, spn)
 
-def place_doublebond(atom1,atom2, dist=1.0, planeatom = None):
+def place_doublebond(atom1,atom2, dist=1.0, planeatom = None, spn = 'up'):
     """places two FODs above and below plane between two atoms"""
 
     midpoint = (atom1 + atom2) * 0.5
@@ -34,9 +34,9 @@ def place_doublebond(atom1,atom2, dist=1.0, planeatom = None):
     p2 = midpoint - n*dist
     pointlist = [p1,p2]
 
-    printfods(pointlist)
+    printfods(pointlist, spn)
 
-def place_triplebond(atom1,atom2, dist=1.3):
+def place_triplebond(atom1,atom2, dist=1.3, spn = 'up'):
     """places three FODs around midpoint between two atoms"""
 
     midpoint = (atom1 + atom2) * 0.5
@@ -59,10 +59,10 @@ def place_triplebond(atom1,atom2, dist=1.3):
     #translate to midpoint
     pointlist = translatepoints(pointlist,midpoint)
 
-    printfods(pointlist)
+    printfods(pointlist, spn)
 
 
-def place_tetrahedron(centeratom,tsize,bondatom = None, alignatom = None, spn='up'):
+def place_tetrahedron(centeratom,tsize,bondatom = None, alignatom = None, spn = 'up'):
     """Places tetrahedron at given point
     top of tetrahedron points toward bond atom"""
     

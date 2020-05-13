@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """class for 3D point in space
 also used for operations on vectors center at origin"""
 import math
