@@ -55,6 +55,19 @@ def place_triplebond(atom1,atom2, dist=1.3, spn = 'up'):
     
     #rotate points around n, align vtop with vbond
     pointlist = rotatepoints(pointlist,n,vtop,vbond)
+
+    #rotate points around vbond by 180 degrees
+    if spn == 'dn':
+        b2 = -1.0*pointlist[0] #180 degrees
+        n = vbond
+        #new theta = angle between normal vectors of planes (b1,center,b2) and (b1,center,p2) 
+        #     (b2 x b1).(p2 x b1) /
+        # ||(b2 x b1|| * || p2 x b1||
+        a1 = b2.cross(vbond)
+        a2 = pointlist[0].cross(vbond)
+
+        #rotate points around n, align a1 with a2
+        pointlist = rotatepoints(pointlist,n,a1,a2)
     
     #translate to midpoint
     pointlist = translatepoints(pointlist,midpoint)

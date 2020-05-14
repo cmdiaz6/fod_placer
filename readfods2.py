@@ -128,10 +128,14 @@ while True:
             if args[0].lower() == 'spin':
                 spin=args[1].lower()
                 if spin == 'down': spin == 'dn'
+            elif args[0].lower() == 'spin':
+                spin=args[1].lower()
+                if spin == 'down': spin == 'dn'
                 
 
     elif args[0].lower() == 'tb' or args[0].lower() == 'triplebond':
         count+=3
+        spin = 'up'
         while True:
             line=f1.readline()
             args = line.split()
@@ -140,7 +144,7 @@ while True:
                 continue
             if args[0].lower() == 'end':
                 print('placing triplebond')
-                place_triplebond(atom1,atom2,dist)
+                place_triplebond(atom1,atom2,dist,spn=spin)
                 break
 
             if args[0].lower() == 'atom1':
@@ -149,6 +153,10 @@ while True:
                 atom2=Point(float(args[1]),float(args[2]),float(args[3]))
             if args[0].lower() == 'distance':
                 dist = float(args[1])
+            elif args[0].lower() == 'spin':
+                spin=args[1].lower().strip()
+                if spin == 'down': 
+                    spin = 'dn'
 
 print('DONE READING')
 
